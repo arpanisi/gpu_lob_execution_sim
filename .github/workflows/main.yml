@@ -1,0 +1,39 @@
+name: Main CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Lint and Full Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install ruff pytest
+
+      - name: Run full unit tests
+        run: |
+          PYTHONPATH=. pytest tests/ -q
+
+      - name: Run Tier 1 synthetic reconstruction & validation
+        run: |
+          PYTHONPATH=. python scripts/run_tier1_synthetic.py --events-output outputs/events/tier1_synthetic_events.jsonl --report-output outputs/reports/tier1_synthetic_validation.json
+
+      - name: Run linter (final gate)
+        run: |
+          ruff check --select=E9,F63,F7,F82 .
