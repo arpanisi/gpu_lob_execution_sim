@@ -1,0 +1,8 @@
+jax
+jaxlib
+pandas
+numpy
+tqdm
+requests
+pyarrow
+python-dotenv

@@ -1,0 +1,8 @@
+description: "GPU-batched reinforcement learning for limit-order-book optimal execution with IPPO, trained against Bybit BTCUSDT L2 order-book data."
+topics:
+- limit-order-book
+- optimal-execution
+- ippo
+- price-time-priority
+- implementation-shortfall
+- informed-flow
